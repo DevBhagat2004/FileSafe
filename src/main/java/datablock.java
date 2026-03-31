@@ -3,11 +3,13 @@ public class datablock {
     String Data;
     String currHash;
     String prevHash;
+    long timeStamp;
 
-    public datablock(int num, String line, String curr, String previous){
+    public datablock(int num, String line, String curr, String previous, long time){
         index = num;
         Data = line;
         currHash= curr;
         prevHash = previous;
+        timeStamp =time;
     }
 }

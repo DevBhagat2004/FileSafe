@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.Scanner; // get users input
+import java.time.Instant;
 public class Main {
 
     public static void options(){
@@ -29,7 +30,7 @@ public class Main {
                 String message = reader.next();
                 System.out.println("Please enter the index");
                 int num = reader.nextInt();
-                datablock block = new datablock(num, message,"Curr", "Prev");
+                datablock block = new datablock(num, message,"Curr", "Prev", System.currentTimeMillis());
                 fileOp op = new fileOp();
                 op.writeFile(fileName,block);
             }
