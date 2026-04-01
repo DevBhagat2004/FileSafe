@@ -18,4 +18,11 @@ public class datablock {
         currHash= curr;
         timeStamp =time;
     }
+
+    public datablock(String line){
+        Data = line;
+    }
+
+
+
 }

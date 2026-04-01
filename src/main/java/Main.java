@@ -23,16 +23,25 @@ public class Main {
                 op.createFile(fileName);
                 }
             else if (choice==2) {
+                // get the filename
                 System.out.println("Please enter the filename");
                 String fileName = reader.next();
+                // for \n protection
                 reader.nextLine();
+                // get the data
                 System.out.println("Please enter the string");
                 String message = reader.nextLine();// reader.next() is only for word and to have line with spaces you need nextLine()
-                datablock block = new datablock(message,"Curr", System.currentTimeMillis());
+                // make the block
+                datablock block = new datablock(message);
                 fileOp op = new fileOp();
+                // call the writeFile
                 op.writeFile(fileName,block);
             }
-            else if (choice==3){System.out.println("Verify the file");}
+            else if (choice==3){
+                System.out.println("Please enter the file name");
+                String fileName = reader.next();
+                fileOp.verifyFile(fileName);
+            }
             options();
             choice = reader.nextInt();
         }

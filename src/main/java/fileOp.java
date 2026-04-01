@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-
 public class fileOp {
 
     public void createFile(String fileName) {
@@ -31,6 +30,8 @@ public class fileOp {
             int lastSize = newRoot.blockchain.size();
             block.index = lastSize;
             block.prevHash = newRoot.blockchain.get(lastSize-1).currHash;
+            block.timeStamp = System.currentTimeMillis();
+            block.currHash = logic.cryptoLogic(block.Data, block.prevHash, block.timeStamp);
             newRoot.blockchain.add(block);
 
             String jString = gson.toJson(newRoot);
@@ -44,10 +45,16 @@ public class fileOp {
         }
         else {
             Root newRoot = new Root();
+            // populating the block
+            block.index = 0;
+            block.prevHash = "NULL";
+            block.timeStamp = System.currentTimeMillis();
+            block.currHash = logic.cryptoLogic(block.Data, block.prevHash, block.timeStamp);
             blockChain.add(block);
+
+            // setting newRoots blockchain to blockChain
             newRoot.blockchain = blockChain;
-            newRoot.blockchain.get(0).prevHash = "NULL";
-            newRoot.blockchain.get(0).index = 0;
+
             String jString = gson.toJson(newRoot);
             try (FileWriter writer = new FileWriter(fileName)) {
                 writer.write(jString);
@@ -55,5 +62,31 @@ public class fileOp {
                 System.err.println("Problem in the new/empty file");
             }
         }
+    }
+
+    public static void verifyFile(String fileName) throws IOException {
+        File file = new File(fileName);
+
+        if (!file.exists()||file.length()<=0){
+            System.out.println("File either does not exist or is empty");
+            return;
+        }
+
+        Root newRoot;
+        ArrayList<datablock> blockChain;
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String rawJson = Files.readString(Paths.get(fileName));
+        newRoot= gson.fromJson(rawJson,Root.class);
+
+        blockChain = newRoot.blockchain;
+
+        for (datablock b : blockChain){
+            if (!logic.cryptoLogic(b.Data, b.prevHash, b.timeStamp).equals(b.currHash)){
+                System.out.println("FILE WAS CHANGED!!!");
+                return;
+            }
+        }
+
+        System.out.println("FILe WAS NOT CHANGED: OK");
     }
 }
