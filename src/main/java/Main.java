@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.util.Scanner; // get users input
-import java.time.Instant;
 public class Main {
 
     public static void options(){
@@ -26,11 +25,10 @@ public class Main {
             else if (choice==2) {
                 System.out.println("Please enter the filename");
                 String fileName = reader.next();
+                reader.nextLine();
                 System.out.println("Please enter the string");
-                String message = reader.next();
-                System.out.println("Please enter the index");
-                int num = reader.nextInt();
-                datablock block = new datablock(num, message,"Curr", "Prev", System.currentTimeMillis());
+                String message = reader.nextLine();// reader.next() is only for word and to have line with spaces you need nextLine()
+                datablock block = new datablock(message,"Curr", System.currentTimeMillis());
                 fileOp op = new fileOp();
                 op.writeFile(fileName,block);
             }

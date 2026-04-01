@@ -28,7 +28,9 @@ public class fileOp {
             Root newRoot;
             String rawJson = Files.readString(Paths.get(fileName));
             newRoot = gson.fromJson(rawJson, Root.class);
-
+            int lastSize = newRoot.blockchain.size();
+            block.index = lastSize;
+            block.prevHash = newRoot.blockchain.get(lastSize-1).currHash;
             newRoot.blockchain.add(block);
 
             String jString = gson.toJson(newRoot);
@@ -44,6 +46,8 @@ public class fileOp {
             Root newRoot = new Root();
             blockChain.add(block);
             newRoot.blockchain = blockChain;
+            newRoot.blockchain.get(0).prevHash = "NULL";
+            newRoot.blockchain.get(0).index = 0;
             String jString = gson.toJson(newRoot);
             try (FileWriter writer = new FileWriter(fileName)) {
                 writer.write(jString);

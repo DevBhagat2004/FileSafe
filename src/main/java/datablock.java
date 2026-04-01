@@ -12,4 +12,10 @@ public class datablock {
         prevHash = previous;
         timeStamp =time;
     }
+
+    public datablock(String line, String curr, long time){
+        Data = line;
+        currHash= curr;
+        timeStamp =time;
+    }
 }
